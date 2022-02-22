@@ -34,6 +34,7 @@ pipeline {
                     configs: 'k8s-deployment.yaml',
                     kubeconfigId: 'AKS_ID',
                     enableConfigSubstitution: true
+			)
         }
 	  }
     }
