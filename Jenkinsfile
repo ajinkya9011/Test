@@ -29,7 +29,7 @@ pipeline {
            }
         stage('deploying pod on AKS') {
 	    steps {
-		 sh 'kubectl run nginx --image=initsixcloud/petclinic:15 --restart=Never'
+		     sh 'kubectl run nginx --image=initsixcloud/petclinic:15 --restart=Never'
         }
 	  }
     }
