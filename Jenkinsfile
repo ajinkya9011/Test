@@ -1,44 +1,59 @@
 pipeline {
-  agent any
-    tools {
-      maven 'maven'
-                 jdk 'jdk'
+    agent any
+        environment {
+        //once you sign up for Docker hub, use that user_id here
+        registry = "acr8983.azurecr.io/mypython-app-may20"
+        //- update your credentials ID after creating credentials for connecting to Docker Hub
+        registryCredential = 'ACR_ID'
+        dockerImage = ''
     }
-    stages {      
-        stage('Build maven ') {
-            steps { 
-                    sh 'pwd'      
-                    sh 'mvn  clean install package'
+    stages {
+
+        stage ('checkout') {
+            steps {
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url:                        'https://github.com/ajinkya9011/Test.git']]])
             }
         }
-        
-        stage('Copy Artifact') {
-           steps { 
-                   sh 'pwd'
-		   sh 'cp -r target/*.jar docker'
-           }
+       
+        stage ('Build docker image') {
+            steps {
+                script {
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                //dockerImage = docker.build registry + ":$BUILD_NUMBER"
+
+                }
+            }
         }
-         
-        stage('Build docker image') {
-           steps {
-               script {         
-                 def customImage = docker.build('initsixcloud/petclinic', "./docker")
-                 docker.withRegistry('https://acr8983.azurecr.io', 'ACR_ID') {
-                 customImage.push("${env.BUILD_NUMBER}")
-                 }                     
-           }
-        stage ('K8S Deploy') {
-           steps {
-               script {
+       
+         // Uploading Docker images into Docker Hub
+    stage('Upload Image') {
+     steps{   
+         script {
+            docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+            }
+        }
+      }
+    }
+
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+   
+    stage ('K8S Deploy') {
+        steps {
+            script {
                 kubernetesDeploy(
                     configs: 'k8s-deployment.yaml',
                     kubeconfigId: 'AKS_ID',
                     enableConfigSubstitution: true
-			)
+                    )           
+               
+            }
         }
-	  }
     }
-}
-}
-}
+  
+    }  
 }
