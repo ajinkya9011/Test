@@ -26,20 +26,8 @@ pipeline {
                  docker.withRegistry('https://acr8983.azurecr.io', 'ACR_ID') {
                  customImage.push("${env.BUILD_NUMBER}")
                  }                     
-        }
-
-        stage('kuber'){
-           steps {
-               script {
-                 kubernetesDeploy(
-                    configs: 'k8s-deployment.yaml',
-                    kubeconfigId: 'AKS_ID',
-                    enableConfigSubstitution: true
-			)
-        }
-	  }
-    }
-}
-}
-}
-}
+           }
+		   }
+		   }
+		   }
+		   }
