@@ -28,7 +28,7 @@ pipeline {
                  }                     
         }
 
-        stage('kubernetes') {
+        stage('kubernetes'){
            steps {
                script {
                  kubernetesDeploy(
