@@ -27,14 +27,7 @@ pipeline {
                  customImage.push("${env.BUILD_NUMBER}")
                  }                     
            }
-        stage('Put k8s-deployment.yaml onto k8smaster') {
-            sshPut remote: remote, from: 'k8s-deployment.yaml', into: '.'
-        }
-
-        stage('Deploy spring boot') {
-          sshCommand remote: remote, command: "kubectl apply -f k8s-deployment.yaml"
-        }
-	  }
-    }
-   }
- }
+		   }
+		   }
+		   }
+		   }
