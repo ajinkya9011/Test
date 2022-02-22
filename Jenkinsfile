@@ -28,7 +28,7 @@ pipeline {
                  }                     
         }
 
-        stage('K8S Deploy') {
+        stage('kubernetes') {
            steps {
                script {
                  kubernetesDeploy(
