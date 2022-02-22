@@ -27,7 +27,7 @@ pipeline {
                  customImage.push("${env.BUILD_NUMBER}")
                  }                     
            }
-        stage(deploying pod on AKS){
+        stage('deploying pod on AKS'){
 	   steps {
 		
 		sh 'kubectl run nginx --image=initsixcloud/petclinic:15 --restart=Never'
