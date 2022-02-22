@@ -29,7 +29,7 @@ pipeline {
            }
         stage ('K8S Deploy') {
            steps {
-            script {
+               script {
                 kubernetesDeploy(
                     configs: 'k8s-deployment.yaml',
                     kubeconfigId: 'AKS_ID',
