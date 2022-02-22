@@ -27,9 +27,13 @@ pipeline {
                  customImage.push("${env.BUILD_NUMBER}")
                  }                     
            }
-        stage('deploying pod on AKS') {
-	    steps {
-		     sh 'kubectl run nginx --image=initsixcloud/petclinic:15 --restart=Never'
+        stage ('K8S Deploy') {
+        steps {
+            script {
+                kubernetesDeploy(
+                    configs: 'k8s-deployment.yaml',
+                    kubeconfigId: 'AKS_ID',
+                    enableConfigSubstitution: true
         }
 	  }
     }
