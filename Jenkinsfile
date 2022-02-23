@@ -27,6 +27,8 @@ pipeline {
                  customImage.push("${env.BUILD_NUMBER}")
                  }                     
         }
+		}
+		}
         
         stage('kubernetes') {
            steps {
@@ -39,7 +41,5 @@ pipeline {
         }
 	  }
     }
-}
-}
 }
 }
